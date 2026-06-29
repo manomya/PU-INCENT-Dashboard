@@ -5,6 +5,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/a
 export interface DashboardData {
   total_startups: number;
   active_startups?: number;
+  total_domains?: number;
   total_mentors: number;
   total_funding: string;
   active_events: number;
