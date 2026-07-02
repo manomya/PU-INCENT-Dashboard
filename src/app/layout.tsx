@@ -3,7 +3,6 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import TopNavbar from "@/components/TopNavbar";
 import BottomNavbar from "@/components/BottomNavbar";
-import { Agentation } from "agentation";
 import Providers from "./Providers";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
@@ -40,7 +39,6 @@ export default function RootLayout({
               {children}
             </main>
             <BottomNavbar />
-            <Agentation />
           </Providers>
         </ThemeProvider>
       </body>
