@@ -51,9 +51,9 @@ export default function TopNavbar() {
         <Link href="/" className="flex items-center h-8 sm:h-10 lg:hidden">
           <div className="relative h-8 sm:h-10 w-32 sm:w-40 flex items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/logo-light.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-light" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
+            <img src="/images/logo-dark.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-light" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/logo-dark.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-dark scale-[1.35] origin-left" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
+            <img src="/images/logo-light.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-dark scale-[1.35] origin-left" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
           </div>
         </Link>
         
