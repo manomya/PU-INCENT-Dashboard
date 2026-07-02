@@ -28,13 +28,13 @@ export default async function StartupsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
           <h2 className="text-xl font-heading font-semibold text-on-surface">Incubated Startups</h2>
           <p className="text-sm text-on-surface-variant mt-1">Manage and view details of all startups currently in the program.</p>
         </div>
         {canAdd && (
-          <button className="bg-primary hover:bg-primary-container text-on-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+          <button className="bg-primary hover:bg-primary-container text-on-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm self-start sm:self-auto shrink-0">
             Add Startup
           </button>
         )}

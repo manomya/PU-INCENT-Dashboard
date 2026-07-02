@@ -27,7 +27,7 @@ export default function RootLayout({
           <Providers>
             <Sidebar />
             <TopNavbar />
-            <main className="ml-[280px] pt-24 pb-12 px-margin-desktop h-full overflow-y-auto bg-background transition-colors duration-200">
+            <main className="lg:ml-[280px] pt-20 lg:pt-24 pb-12 px-4 lg:px-margin-desktop h-full overflow-y-auto bg-background transition-colors duration-200">
               {children}
             </main>
             <Agentation />

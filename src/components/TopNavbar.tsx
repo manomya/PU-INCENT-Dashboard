@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
+import { useMobileMenu } from '@/contexts/MobileMenuContext';
 import StartupFormModal from './StartupFormModal';
 import Link from 'next/link';
 import { Startup } from '@/services/api';
@@ -12,6 +13,7 @@ export default function TopNavbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
+  const { toggle } = useMobileMenu();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Search State
@@ -59,11 +61,17 @@ export default function TopNavbar() {
   ).slice(0, 5);
 
   return (
-    <header className="fixed top-0 left-[280px] w-[calc(100%-280px)] h-16 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-margin-desktop z-40">
-      <div className="flex items-center gap-6 flex-1">
-        <h2 className="text-2xl font-headline-md text-on-surface font-bold">{getTitle()}</h2>
+    <header className="fixed top-0 left-0 lg:left-[280px] w-full lg:w-[calc(100%-280px)] h-16 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-4 lg:px-margin-desktop z-40 transition-all duration-300">
+      <div className="flex items-center gap-4 lg:gap-6 flex-1">
+        <button 
+          onClick={toggle}
+          className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-variant transition-colors"
+        >
+          <span className="material-symbols-outlined">menu</span>
+        </button>
+        <h2 className="text-xl lg:text-2xl font-headline-md text-on-surface font-bold hidden sm:block">{getTitle()}</h2>
         
-        <div className="relative w-full max-w-md ml-8" ref={searchRef}>
+        <div className="relative w-full max-w-md lg:ml-8" ref={searchRef}>
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
           <input 
             className="w-full bg-surface-variant border border-transparent rounded-lg pl-10 pr-4 py-2 text-sm focus:border-brand-orange focus:bg-surface-container-lowest transition-all text-on-surface placeholder-on-surface-variant/70 outline-none" 
@@ -130,10 +138,11 @@ export default function TopNavbar() {
             <div className="h-8 w-[1px] bg-outline-variant"></div>
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="bg-brand-orange text-white px-6 py-2 rounded-lg font-medium flex items-center gap-2 hover:opacity-90 transition-all shadow-md shadow-brand-orange/20"
+              className="bg-brand-orange text-white px-3 md:px-6 py-2 rounded-lg font-medium flex items-center gap-2 hover:opacity-90 transition-all shadow-md shadow-brand-orange/20"
+              title="New Startup"
             >
               <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
-              New Startup
+              <span className="hidden md:inline">New Startup</span>
             </button>
           </>
         )}
