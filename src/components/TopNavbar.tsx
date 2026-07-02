@@ -45,7 +45,10 @@ export default function TopNavbar() {
   return (
     <header className="fixed top-0 left-0 lg:left-[280px] w-full lg:w-[calc(100%-280px)] h-16 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-4 lg:px-margin-desktop z-40 transition-all duration-300">
       <div className="flex items-center gap-4 lg:gap-6 flex-1">
-        <h2 className="text-xl lg:text-2xl font-headline-md text-on-surface font-bold">{getTitle()}</h2>
+        <Link href="/" className="flex items-center h-8 sm:h-10 lg:hidden">
+          <img alt="PU-iNCENT Logo" className="h-full w-auto show-in-light" src="/images/logo-light.png" onError={(e) => { e.currentTarget.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuBDw8RG7islAC7a6nT-0wWr4MtgLNuO7ra0O_KkizFiA0MRlf5v8b7PLjcdbppYtD7MCSUgOVNtbKv6ogzV3ZqKlJUCARmPuHjDiBoEqWAtUq9Jv4cf3iqjghXJRg-DCa_xX4hadln40Ei9jaCUVj1qhWvP-J-G-7kd9fl1f82c3CHKhcihzB3pVAj64CMJHPb-sfKoxJzmBOrdOLGGwEqQzsVvR5SSS6GxqlV-WQTn4I9TPjF9TA-puqWETFPRu3RgaP6rh-ihHKnz" }} />
+          <img alt="PU-iNCENT Logo" className="h-full w-auto show-in-dark scale-[1.35] origin-left" src="/images/logo-dark.png" onError={(e) => { e.currentTarget.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuBDw8RG7islAC7a6nT-0wWr4MtgLNuO7ra0O_KkizFiA0MRlf5v8b7PLjcdbppYtD7MCSUgOVNtbKv6ogzV3ZqKlJUCARmPuHjDiBoEqWAtUq9Jv4cf3iqjghXJRg-DCa_xX4hadln40Ei9jaCUVj1qhWvP-J-G-7kd9fl1f82c3CHKhcihzB3pVAj64CMJHPb-sfKoxJzmBOrdOLGGwEqQzsVvR5SSS6GxqlV-WQTn4I9TPjF9TA-puqWETFPRu3RgaP6rh-ihHKnz" }} />
+        </Link>
         
         <div className="relative w-full max-w-md ml-auto lg:ml-8 hidden lg:block" ref={searchRef}>
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
