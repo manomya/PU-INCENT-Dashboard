@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react';
 import StartupFormModal from './StartupFormModal';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
+import Image from 'next/image';
 import { useStartupSearch } from '@/hooks/useStartupSearch';
 
 export default function TopNavbar() {
