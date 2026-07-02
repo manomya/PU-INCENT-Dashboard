@@ -57,9 +57,11 @@ export default function BottomNavbar() {
                 onClick={item.onClick}
                 className="flex flex-col items-center justify-center gap-1 w-16 h-full text-on-surface-variant hover:text-brand-orange transition-colors"
               >
-                <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: isSearchOpen ? "'FILL' 1" : "'FILL' 0" }}>
-                  {item.icon}
-                </span>
+                <div className={`relative px-4 py-1 rounded-full transition-colors ${isSearchOpen ? 'bg-brand-orange/15 text-brand-orange' : ''}`}>
+                  <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: isSearchOpen ? "'FILL' 1" : "'FILL' 0" }}>
+                    {item.icon}
+                  </span>
+                </div>
                 <span className={`text-[10px] font-bold tracking-wider ${isSearchOpen ? 'text-brand-orange' : ''}`}>
                   {item.name}
                 </span>
@@ -76,13 +78,10 @@ export default function BottomNavbar() {
                 isActive && !isSearchOpen ? 'text-brand-orange' : 'text-on-surface-variant hover:text-brand-orange'
               }`}
             >
-              <div className="relative">
+              <div className={`relative px-4 py-1 rounded-full transition-colors ${isActive && !isSearchOpen ? 'bg-brand-orange/15 text-brand-orange' : ''}`}>
                 <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: (isActive && !isSearchOpen) ? "'FILL' 1" : "'FILL' 0" }}>
                   {item.icon}
                 </span>
-                {isActive && !isSearchOpen && (
-                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-brand-orange"></span>
-                )}
               </div>
               <span className={`text-[10px] font-bold tracking-wider ${isActive && !isSearchOpen ? 'text-brand-orange' : ''}`}>
                 {item.name}
