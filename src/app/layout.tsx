@@ -7,6 +7,15 @@ import { Agentation } from "agentation";
 import Providers from "./Providers";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
+import { Hanken_Grotesk } from 'next/font/google';
+
+const hanken = Hanken_Grotesk({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-hanken',
+});
+
 export const metadata: Metadata = {
   title: "PU-iNCENT Dashboard | Startup Incubation Center",
   description: "Incubation Center Dashboard",
@@ -18,9 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full bg-background text-on-surface" suppressHydrationWarning>
+    <html lang="en" className={`h-full bg-background text-on-surface ${hanken.variable}`} suppressHydrationWarning>
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
       <body className="h-full overflow-hidden font-sans pb-safe">

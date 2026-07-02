@@ -83,12 +83,17 @@ export default async function StartupProfilePage({ params }: { params: Promise<{
                 <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-[16px]">category</span>{startup["Domain"] || 'N/A'}</span>
               </p>
               
-              {startup["Website"] && (
+              {startup["Website"] && !['nil', 'na', 'n/a', '-', 'none'].includes(startup["Website"].trim().toLowerCase()) ? (
                 <a href={startup["Website"].startsWith('http') ? startup["Website"] : `https://${startup["Website"]}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-bold text-brand-orange hover:text-brand-orange/80 transition-colors mt-2">
                   <span className="material-symbols-outlined text-[18px]">language</span>
                   Visit Website
                   <span className="material-symbols-outlined text-[14px] ml-1 opacity-50">open_in_new</span>
                 </a>
+              ) : (
+                <div className="inline-flex items-center gap-1.5 text-sm font-bold text-on-surface-variant/50 mt-2">
+                  <span className="material-symbols-outlined text-[18px]">language</span>
+                  No Website
+                </div>
               )}
             </div>
           </div>

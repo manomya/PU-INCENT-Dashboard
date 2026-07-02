@@ -27,8 +27,8 @@
   
   --color-outline-variant: var(--theme-outline-variant);
   
-  --font-sans: "Hanken Grotesk", sans-serif;
-  --font-heading: "Hanken Grotesk", sans-serif;
+  --font-sans: var(--font-hanken), sans-serif;
+  --font-heading: var(--font-hanken), sans-serif;
   
   --radius-DEFAULT: 0.25rem;
   --radius-lg: 12px;

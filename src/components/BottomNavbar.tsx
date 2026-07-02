@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { useStartupSearch } from '@/hooks/useStartupSearch';
 
@@ -140,10 +141,9 @@ export default function BottomNavbar() {
                     }}
                     className="w-full text-left p-4 bg-surface-container rounded-2xl hover:bg-surface-variant transition-colors flex items-center gap-4 border border-outline-variant/30"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-surface-variant flex items-center justify-center shrink-0 overflow-hidden text-brand-orange font-bold text-sm shadow-sm">
+                    <div className="w-12 h-12 rounded-xl bg-surface-variant flex items-center justify-center shrink-0 overflow-hidden text-brand-orange font-bold text-sm shadow-sm relative">
                       {startup.logo && startup.logo.startsWith('http') ? (
-                        /* eslint-disable-next-line @next/next/no-img-element */
-                        <img src={startup.logo} alt="" className="w-full h-full object-cover" />
+                        <Image src={startup.logo} alt={startup.startup_name} fill sizes="48px" className="object-cover" />
                       ) : (
                         startup.startup_name.substring(0, 2).toUpperCase()
                       )}

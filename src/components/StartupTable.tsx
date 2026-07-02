@@ -66,8 +66,7 @@ export default function StartupTable({ startups }: { startups: Startup[] }) {
                   <td className="px-6 py-5 flex items-center gap-4">
                     {logoUrl && logoUrl.startsWith('http') ? (
                       <div className="w-10 h-10 rounded-xl overflow-hidden bg-white shadow-sm border border-outline-variant/50 group-hover:shadow-md transition-shadow shrink-0 relative flex items-center justify-center">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={logoUrl} alt={startup.startup_name} className="w-full h-full object-cover" />
+                        <Image src={logoUrl} alt={startup.startup_name} fill sizes="40px" className="object-cover" />
                       </div>
                     ) : (
                       <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xs bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange border border-brand-orange/20 shadow-sm group-hover:shadow-md transition-all shrink-0">
