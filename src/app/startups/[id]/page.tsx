@@ -53,13 +53,13 @@ export default async function StartupProfilePage({ params }: { params: Promise<{
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div className="flex flex-col md:flex-row md:items-center gap-8">
-            <Link href="/startups" className="absolute top-8 left-8 w-10 h-10 flex items-center justify-center bg-surface-container-lowest/50 backdrop-blur-md border border-outline-variant/50 rounded-full hover:bg-surface-variant transition-all hover:-translate-x-1 group">
+          <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8">
+            <Link href="/startups" className="w-10 h-10 flex items-center justify-center bg-surface-container-lowest/50 backdrop-blur-md border border-outline-variant/50 rounded-full hover:bg-surface-variant transition-all hover:-translate-x-1 group shrink-0 shadow-sm">
               <span className="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface">arrow_back</span>
             </Link>
             
             {/* Logo Wrapper */}
-            <div className="mt-8 md:mt-0 ml-0 md:ml-12 shrink-0">
+            <div className="shrink-0">
               <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl shadow-black/5 border-4 border-white overflow-hidden relative group">
                 {logo && logo.startsWith('http') ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
