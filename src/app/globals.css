@@ -43,7 +43,7 @@
 }
 
 @layer base {
-  :root.dark, .dark {
+  [data-theme='dark'] {
     --color-background: #000000 !important;
     --color-on-background: #f8f9fa !important;
     
