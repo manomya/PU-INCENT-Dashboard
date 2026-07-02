@@ -45,7 +45,8 @@ export default function BottomNavbar() {
 
   return (
     <>
-      <div className="lg:hidden fixed bottom-0 left-0 w-full h-16 bg-surface-container-lowest border-t border-outline-variant z-40 px-6 pb-safe flex justify-between items-center shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      {/* Navigation Tabs - Always visible */}
+      <div className="lg:hidden fixed bottom-0 left-0 w-full h-16 bg-surface-container-lowest border-t border-outline-variant z-50 px-6 pb-safe flex justify-between items-center shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         {navItems.map((item) => {
           const isActive = item.href !== '#' && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)));
           
@@ -56,8 +57,12 @@ export default function BottomNavbar() {
                 onClick={item.onClick}
                 className="flex flex-col items-center justify-center gap-1 w-16 h-full text-on-surface-variant hover:text-brand-orange transition-colors"
               >
-                <span className="material-symbols-outlined text-[24px]">{item.icon}</span>
-                <span className="text-[10px] font-bold tracking-wider">{item.name}</span>
+                <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: isSearchOpen ? "'FILL' 1" : "'FILL' 0" }}>
+                  {item.icon}
+                </span>
+                <span className={`text-[10px] font-bold tracking-wider ${isSearchOpen ? 'text-brand-orange' : ''}`}>
+                  {item.name}
+                </span>
               </button>
             );
           }
@@ -66,17 +71,20 @@ export default function BottomNavbar() {
             <Link
               key={item.name}
               href={item.href}
+              onClick={() => setIsSearchOpen(false)}
               className={`flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors ${
-                isActive ? 'text-brand-orange' : 'text-on-surface-variant hover:text-brand-orange'
+                isActive && !isSearchOpen ? 'text-brand-orange' : 'text-on-surface-variant hover:text-brand-orange'
               }`}
             >
               <div className="relative">
-                <span className="material-symbols-outlined text-[24px]">{item.icon}</span>
-                {isActive && (
+                <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: (isActive && !isSearchOpen) ? "'FILL' 1" : "'FILL' 0" }}>
+                  {item.icon}
+                </span>
+                {isActive && !isSearchOpen && (
                   <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-brand-orange"></span>
                 )}
               </div>
-              <span className={`text-[10px] font-bold tracking-wider ${isActive ? 'text-brand-orange' : ''}`}>
+              <span className={`text-[10px] font-bold tracking-wider ${isActive && !isSearchOpen ? 'text-brand-orange' : ''}`}>
                 {item.name}
               </span>
             </Link>
@@ -86,11 +94,11 @@ export default function BottomNavbar() {
 
       {/* Mobile Search Overlay */}
       {isSearchOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-surface-container-lowest flex flex-col animate-in slide-in-from-bottom-2 duration-200">
-          <div className="p-4 border-b border-outline-variant flex items-center gap-3 bg-surface-container-lowest sticky top-0">
+        <div className="lg:hidden fixed inset-0 z-40 bg-surface-container-lowest flex flex-col animate-in slide-in-from-bottom-2 duration-200">
+          <div className="p-4 border-b border-outline-variant flex items-center gap-3 bg-surface-container-lowest sticky top-0 pt-safe">
             <button 
               onClick={() => setIsSearchOpen(false)}
-              className="w-10 h-10 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-variant transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-variant transition-colors shrink-0"
             >
               <span className="material-symbols-outlined">arrow_back</span>
             </button>
@@ -115,7 +123,7 @@ export default function BottomNavbar() {
             </div>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-4 bg-background">
+          <div className="flex-1 overflow-y-auto p-4 pb-24 bg-background">
             {isFetching ? (
               <div className="py-8 text-center text-sm text-on-surface-variant flex flex-col items-center justify-center gap-3">
                 <span className="material-symbols-outlined animate-spin text-[24px] text-brand-orange">progress_activity</span>
