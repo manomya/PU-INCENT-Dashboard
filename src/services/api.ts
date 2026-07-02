@@ -69,17 +69,28 @@ export interface Mentor {
   "Assigned Startups"?: string;
 }
 
+import { getSheetData } from '@/lib/google-sheets';
+
 export async function getDashboardData(): Promise<DashboardData | null> {
   try {
-    const headersList = await headers();
-    const cookie = headersList.get('cookie') || '';
-    const res = await fetch(`${API_BASE_URL}/dashboard`, { 
-      method: 'POST',
-      cache: 'no-store',
-      headers: { 'Content-Type': 'application/json', 'Cookie': cookie }
+    const startups = await getSheetData("Master_Database 2026-27");
+    if (!startups || startups.length === 0) {
+      return { total_startups: 0, active_startups: 0, total_domains: 0 } as any;
+    }
+    const validStartups = startups.filter((row: any) => 
+      row["Startup Registration number"] && String(row["Startup Registration number"]).trim() !== ""
+    );
+    const activeStartups = validStartups.filter((row: any) => {
+      const stage = String(row["Stage"] || "").trim().toUpperCase();
+      return stage !== "" && stage !== "NO IDEA";
     });
-    if (!res.ok) throw new Error('Failed to fetch dashboard data');
-    return await res.json();
+    const domains = new Set(validStartups.map((row: any) => String(row["Domain"] || "").trim().toLowerCase()).filter(Boolean));
+
+    return {
+      total_startups: validStartups.length,
+      active_startups: activeStartups.length,
+      total_domains: domains.size,
+    } as any;
   } catch (error) {
     console.error(error);
     return null;
@@ -88,15 +99,31 @@ export async function getDashboardData(): Promise<DashboardData | null> {
 
 export async function getStartups(): Promise<Startup[] | null> {
   try {
-    const headersList = await headers();
-    const cookie = headersList.get('cookie') || '';
-    const res = await fetch(`${API_BASE_URL}/startups`, { 
-      method: 'POST',
-      cache: 'no-store',
-      headers: { 'Content-Type': 'application/json', 'Cookie': cookie }
-    });
-    if (!res.ok) throw new Error('Failed to fetch startups');
-    return await res.json();
+    const startups = await getSheetData("Master_Database 2026-27");
+    if (!startups || startups.length === 0) return [];
+    
+    // Map the google sheets headers to the Startup interface format
+    return startups.map((row: any) => ({
+      startup_id: row["Startup Registration number"] || "",
+      startup_name: row["Startup Name"] || "",
+      logo: row["Logo"] || "",
+      domain: row["Domain"] || "",
+      founder_name: row["Founder Name"] || "",
+      founders_photo: row["Founder's Photo"] || "",
+      college_email: row["College Email"] || "",
+      phone_number: row["Phone Number"] || "",
+      year: row["Year"] || "",
+      department: row["Department"] || "",
+      registration_number: row["Registration Number"] || "",
+      branch: row["Branch"] || "",
+      co_founder: row["Co - Founder"] || "",
+      stage: row["Stage"] || "",
+      website: row["Website"] || "",
+      incubation_start_date: row["Incubation Start Date"] || "",
+      personal_email: row["Personal Email"] || "",
+      msme_registration: row["MSME Registration "] || "",
+      pitch_deck: row["Pitch Deck"] || "",
+    }));
   } catch (error) {
     console.error(error);
     return null;
@@ -105,17 +132,13 @@ export async function getStartups(): Promise<Startup[] | null> {
 
 export async function getStartupById(id: string): Promise<StartupDetails | null> {
   try {
-    const headersList = await headers();
-    const cookie = headersList.get('cookie') || '';
-    const res = await fetch(`${API_BASE_URL}/startups/${id}`, { 
-      method: 'POST',
-      cache: 'no-store',
-      headers: { 'Content-Type': 'application/json', 'Cookie': cookie }
-    });
-    if (!res.ok) throw new Error('Failed to fetch startup');
-    const data = await res.json();
-    if (data.error) return null;
-    return data;
+    const data = await getSheetData("Master_Database 2026-27");
+    for (const startup of data) {
+      if (String(startup["Startup Registration number"] || "").trim() === String(id).trim()) {
+        return startup as StartupDetails;
+      }
+    }
+    return null;
   } catch (error) {
     console.error(error);
     return null;
@@ -123,21 +146,21 @@ export async function getStartupById(id: string): Promise<StartupDetails | null>
 }
 
 export async function getMentors(): Promise<Mentor[] | null> {
-  try {
-    const res = await fetch(`${API_BASE_URL}/mentors/`, { next: { revalidate: 30 } });
-    if (!res.ok) throw new Error('Failed to fetch mentors');
-    return await res.json();
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  // Mock or empty if mentors aren't implemented yet, to prevent fetch errors
+  return [];
 }
 
 export async function getStartupCategories(): Promise<string[] | null> {
   try {
-    const res = await fetch(`${API_BASE_URL}/startups/categories`, { next: { revalidate: 30 } });
-    if (!res.ok) throw new Error('Failed to fetch startup categories');
-    return await res.json();
+    const data = await getSheetData("Master_Database 2026-27");
+    const categories: Record<string, number> = {};
+    for (const startup of data) {
+      const category = startup["Domain"];
+      if (category) {
+        categories[category] = (categories[category] || 0) + 1;
+      }
+    }
+    return Object.keys(categories);
   } catch (error) {
     console.error(error);
     return null;
@@ -146,9 +169,15 @@ export async function getStartupCategories(): Promise<string[] | null> {
 
 export async function getStartupStages(): Promise<string[] | null> {
   try {
-    const res = await fetch(`${API_BASE_URL}/startups/stages`, { next: { revalidate: 30 } });
-    if (!res.ok) throw new Error('Failed to fetch startup stages');
-    return await res.json();
+    const data = await getSheetData("Master_Database 2026-27");
+    const stages: Record<string, number> = {};
+    for (const startup of data) {
+      const stage = startup["Stage"];
+      if (stage) {
+        stages[stage] = (stages[stage] || 0) + 1;
+      }
+    }
+    return Object.keys(stages);
   } catch (error) {
     console.error(error);
     return null;
