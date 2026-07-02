@@ -3,24 +3,26 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
-import { useMobileMenu } from '@/contexts/MobileMenuContext';
 import StartupFormModal from './StartupFormModal';
 import Link from 'next/link';
-import { Startup } from '@/services/api';
 import ThemeToggle from './ThemeToggle';
+import { useStartupSearch } from '@/hooks/useStartupSearch';
 
 export default function TopNavbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
-  const { toggle } = useMobileMenu();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // Search State
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-  const [startups, setStartups] = useState<Startup[]>([]);
-  const [isFetching, setIsFetching] = useState(false);
+  const {
+    searchTerm,
+    setSearchTerm,
+    isFocused,
+    setIsFocused,
+    isFetching,
+    filteredStartups
+  } = useStartupSearch();
+  
   const searchRef = useRef<HTMLDivElement>(null);
 
   // Close search when clicking outside
@@ -32,21 +34,7 @@ export default function TopNavbar() {
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // Fetch startups when focused (cache it)
-  useEffect(() => {
-    if (isFocused && startups.length === 0 && !isFetching) {
-      setIsFetching(true);
-      fetch('/api/startups', { method: 'POST' })
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data)) setStartups(data);
-        })
-        .catch(console.error)
-        .finally(() => setIsFetching(false));
-    }
-  }, [isFocused, startups.length, isFetching]);
+  }, [setIsFocused]);
 
   const getTitle = () => {
     if (pathname === '/') return 'Dashboard';
@@ -54,24 +42,12 @@ export default function TopNavbar() {
     return path ? path.charAt(0).toUpperCase() + path.slice(1) : 'Dashboard';
   };
 
-  const filteredStartups = searchTerm.trim() === '' ? [] : startups.filter(s => 
-    s.startup_name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    s.startup_id?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    s.founder_name?.toLowerCase().includes(searchTerm.toLowerCase())
-  ).slice(0, 5);
-
   return (
     <header className="fixed top-0 left-0 lg:left-[280px] w-full lg:w-[calc(100%-280px)] h-16 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-4 lg:px-margin-desktop z-40 transition-all duration-300">
       <div className="flex items-center gap-4 lg:gap-6 flex-1">
-        <button 
-          onClick={toggle}
-          className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-variant transition-colors"
-        >
-          <span className="material-symbols-outlined">menu</span>
-        </button>
-        <h2 className="text-xl lg:text-2xl font-headline-md text-on-surface font-bold hidden sm:block">{getTitle()}</h2>
+        <h2 className="text-xl lg:text-2xl font-headline-md text-on-surface font-bold">{getTitle()}</h2>
         
-        <div className="relative w-full max-w-md lg:ml-8" ref={searchRef}>
+        <div className="relative w-full max-w-md ml-auto lg:ml-8 hidden lg:block" ref={searchRef}>
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
           <input 
             className="w-full bg-surface-variant border border-transparent rounded-lg pl-10 pr-4 py-2 text-sm focus:border-brand-orange focus:bg-surface-container-lowest transition-all text-on-surface placeholder-on-surface-variant/70 outline-none" 
