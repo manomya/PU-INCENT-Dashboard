@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -24,8 +23,10 @@ export default function Sidebar() {
     <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[280px] bg-surface-container-lowest border-r border-outline-variant shadow-sm flex-col p-6 z-50">
       <Link href="/startups" className="mb-10 px-2 block hover:opacity-80 transition-opacity">
         <div className="relative h-10 w-40 mb-2">
-          <Image src="/images/logo-light.png" alt="PU-iNCENT Logo" fill className="object-contain object-left show-in-light" priority sizes="160px" />
-          <Image src="/images/logo-dark.png" alt="PU-iNCENT Logo" fill className="object-contain object-left show-in-dark scale-[1.35] origin-left" priority sizes="160px" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/logo-light.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-light" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/logo-dark.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-dark scale-[1.35] origin-left" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
         </div>
         <p className="text-[10px] font-bold tracking-widest text-brand-orange uppercase">Incubation Dashboard</p>
       </Link>
