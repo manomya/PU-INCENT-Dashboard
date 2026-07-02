@@ -24,9 +24,9 @@ export default function Sidebar() {
       <Link href="/startups" className="mb-10 px-2 block hover:opacity-80 transition-opacity">
         <div className="relative h-10 w-40 mb-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logo-dark.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-light" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
+          <img src="/images/logo-light.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-light" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logo-light.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-dark scale-[1.35] origin-left" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
+          <img src="/images/logo-dark.png" alt="PU-iNCENT Logo" className="h-full w-auto object-contain object-left show-in-dark scale-[1.35] origin-left" fetchPriority="high" onError={(e) => { e.currentTarget.src = fallbackImg; e.currentTarget.onerror = null; }} />
         </div>
         <p className="text-[10px] font-bold tracking-widest text-brand-orange uppercase">Incubation Dashboard</p>
       </Link>
