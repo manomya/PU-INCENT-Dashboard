@@ -40,11 +40,20 @@ export default function LoginPage() {
     <div className="min-h-screen bg-surface-container flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant shadow-2xl">
         <div className="text-center mb-8">
-          <img 
-            alt="PU-iNCENT Logo" 
-            className="h-12 w-auto mx-auto mb-4" 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDw8RG7islAC7a6nT-0wWr4MtgLNuO7ra0O_KkizFiA0MRlf5v8b7PLjcdbppYtD7MCSUgOVNtbKv6ogzV3ZqKlJUCARmPuHjDiBoEqWAtUq9Jv4cf3iqjghXJRg-DCa_xX4hadln40Ei9jaCUVj1qhWvP-J-G-7kd9fl1f82c3CHKhcihzB3pVAj64CMJHPb-sfKoxJzmBOrdOLGGwEqQzsVvR5SSS6GxqlV-WQTn4I9TPjF9TA-puqWETFPRu3RgaP6rh-ihHKnz" 
-          />
+          <div className="w-16 h-16 bg-surface-variant/50 rounded-2xl flex items-center justify-center p-3 mx-auto mb-4">
+            <img 
+              src="/images/logo-light.png" 
+              alt="PU-iNCENT Logo" 
+              className="w-full h-full object-contain show-in-light"
+              onError={(e) => { e.currentTarget.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuBDw8RG7islAC7a6nT-0wWr4MtgLNuO7ra0O_KkizFiA0MRlf5v8b7PLjcdbppYtD7MCSUgOVNtbKv6ogzV3ZqKlJUCARmPuHjDiBoEqWAtUq9Jv4cf3iqjghXJRg-DCa_xX4hadln40Ei9jaCUVj1qhWvP-J-G-7kd9fl1f82c3CHKhcihzB3pVAj64CMJHPb-sfKoxJzmBOrdOLGGwEqQzsVvR5SSS6GxqlV-WQTn4I9TPjF9TA-puqWETFPRu3RgaP6rh-ihHKnz" }}
+            />
+            <img 
+              src="/images/logo-dark.png" 
+              alt="PU-iNCENT Logo" 
+              className="w-full h-full object-contain show-in-dark"
+              onError={(e) => { e.currentTarget.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuBDw8RG7islAC7a6nT-0wWr4MtgLNuO7ra0O_KkizFiA0MRlf5v8b7PLjcdbppYtD7MCSUgOVNtbKv6ogzV3ZqKlJUCARmPuHjDiBoEqWAtUq9Jv4cf3iqjghXJRg-DCa_xX4hadln40Ei9jaCUVj1qhWvP-J-G-7kd9fl1f82c3CHKhcihzB3pVAj64CMJHPb-sfKoxJzmBOrdOLGGwEqQzsVvR5SSS6GxqlV-WQTn4I9TPjF9TA-puqWETFPRu3RgaP6rh-ihHKnz" }}
+            />
+          </div>
           <h1 className="text-2xl font-headline-md font-bold text-on-surface">Welcome Back</h1>
           <p className="text-sm text-on-surface-variant mt-1">Sign in to the Incubation Dashboard</p>
         </div>
