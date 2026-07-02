@@ -37,8 +37,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-container flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant shadow-2xl">
+    <div className="fixed inset-0 z-[100] bg-surface-container flex items-center justify-center p-4 overflow-y-auto">
+      <div className="w-full max-w-md bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant shadow-2xl m-auto">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-surface-variant/50 rounded-2xl flex items-center justify-center p-3 mx-auto mb-4">
             <img 
