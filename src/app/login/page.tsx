@@ -50,7 +50,7 @@ export default function LoginPage() {
             <img 
               src="/images/logo-dark.png" 
               alt="PU-iNCENT Logo" 
-              className="w-full h-full object-contain show-in-dark"
+              className="w-full h-full object-contain show-in-dark scale-[1.35]"
               onError={(e) => { e.currentTarget.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuBDw8RG7islAC7a6nT-0wWr4MtgLNuO7ra0O_KkizFiA0MRlf5v8b7PLjcdbppYtD7MCSUgOVNtbKv6ogzV3ZqKlJUCARmPuHjDiBoEqWAtUq9Jv4cf3iqjghXJRg-DCa_xX4hadln40Ei9jaCUVj1qhWvP-J-G-7kd9fl1f82c3CHKhcihzB3pVAj64CMJHPb-sfKoxJzmBOrdOLGGwEqQzsVvR5SSS6GxqlV-WQTn4I9TPjF9TA-puqWETFPRu3RgaP6rh-ihHKnz" }}
             />
           </div>
