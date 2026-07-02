@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import StartupFormModal from './StartupFormModal';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
@@ -115,11 +115,21 @@ export default function TopNavbar() {
         </div>
       </div>
       <div className="flex items-center gap-6">
-        <ThemeToggle />
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle />
+          
+          <button
+            onClick={() => signOut({ callbackUrl: '/login' })}
+            className="flex lg:hidden items-center justify-center w-10 h-10 rounded-xl text-red-500 hover:bg-red-500/10 transition-colors"
+            title="Logout"
+          >
+            <span className="material-symbols-outlined">logout</span>
+          </button>
+        </div>
         
         {(session?.user as any)?.permissions?.canAdd && (
           <>
-            <div className="h-8 w-[1px] bg-outline-variant"></div>
+            <div className="h-8 w-[1px] bg-outline-variant hidden md:block"></div>
             <button 
               onClick={() => setIsModalOpen(true)}
               className="bg-brand-orange text-white px-3 md:px-6 py-2 rounded-lg font-medium flex items-center gap-2 hover:opacity-90 transition-all shadow-md shadow-brand-orange/20"
