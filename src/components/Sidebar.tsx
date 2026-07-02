@@ -19,10 +19,10 @@ export default function Sidebar() {
 
   return (
     <aside className="fixed left-0 top-0 h-full w-[280px] bg-surface-container-lowest border-r border-outline-variant shadow-sm flex flex-col p-6 z-50">
-      <div className="mb-10 px-2">
+      <Link href="/startups" className="mb-10 px-2 block hover:opacity-80 transition-opacity">
         <img alt="PU-iNCENT Logo" className="h-10 w-auto mb-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDw8RG7islAC7a6nT-0wWr4MtgLNuO7ra0O_KkizFiA0MRlf5v8b7PLjcdbppYtD7MCSUgOVNtbKv6ogzV3ZqKlJUCARmPuHjDiBoEqWAtUq9Jv4cf3iqjghXJRg-DCa_xX4hadln40Ei9jaCUVj1qhWvP-J-G-7kd9fl1f82c3CHKhcihzB3pVAj64CMJHPb-sfKoxJzmBOrdOLGGwEqQzsVvR5SSS6GxqlV-WQTn4I9TPjF9TA-puqWETFPRu3RgaP6rh-ihHKnz"/>
         <p className="text-[10px] font-bold tracking-widest text-brand-orange uppercase">Incubation Dashboard</p>
-      </div>
+      </Link>
       <nav className="flex-1 space-y-1 sidebar-scroll overflow-y-auto">
         {navigation.map((item) => {
           const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
