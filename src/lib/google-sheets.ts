@@ -6,12 +6,23 @@ const SCOPES = [
   "https://www.googleapis.com/auth/drive",
 ];
 
-const credentialsPath = path.join(process.cwd(), "credentials/service-account.json");
+// Determine whether to use environment variables or local keyFile
+const useEnvAuth = process.env.GOOGLE_CLIENT_EMAIL && process.env.GOOGLE_PRIVATE_KEY;
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: credentialsPath,
-  scopes: SCOPES,
-});
+export const auth = new google.auth.GoogleAuth(
+  useEnvAuth
+    ? {
+        credentials: {
+          client_email: process.env.GOOGLE_CLIENT_EMAIL,
+          private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+        },
+        scopes: SCOPES,
+      }
+    : {
+        keyFile: path.join(process.cwd(), "credentials/service-account.json"),
+        scopes: SCOPES,
+      }
+);
 
 const SHEET_ID = "1wWCxLnNGoKZNQMrOd8ZRfdACdVxSK21F9eUM_1uH9oA";
 

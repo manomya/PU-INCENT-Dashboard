@@ -1,20 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { google } from "googleapis";
-import path from "path";
-import { clearSheetCache } from "@/lib/google-sheets";
+import { clearSheetCache, auth } from "@/lib/google-sheets";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-
-const SCOPES = [
-  "https://www.googleapis.com/auth/spreadsheets",
-  "https://www.googleapis.com/auth/drive",
-];
-
-const credentialsPath = path.join(process.cwd(), "credentials/service-account.json");
-const auth = new google.auth.GoogleAuth({
-  keyFile: credentialsPath,
-  scopes: SCOPES,
-});
 
 const SHEET_ID = "1wWCxLnNGoKZNQMrOd8ZRfdACdVxSK21F9eUM_1uH9oA";
 const TAB_NAME = "Master_Database 2026-27";

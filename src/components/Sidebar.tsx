@@ -13,7 +13,7 @@ export default function Sidebar() {
     { name: 'Startups', href: '/startups', icon: 'rocket_launch' },
   ];
 
-  if (session?.user?.role === 'admin') {
+  if ((session?.user as any)?.role === 'admin') {
     navigation.push({ name: 'Admin', href: '/admin/users', icon: 'admin_panel_settings' });
   }
 
@@ -51,7 +51,7 @@ export default function Sidebar() {
               </div>
               <div className="overflow-hidden">
                 <p className="text-sm font-bold text-on-surface truncate">{session.user?.email}</p>
-                <p className="text-[10px] uppercase font-bold text-on-surface-variant">{session.user?.role}</p>
+                <p className="text-[10px] uppercase font-bold text-on-surface-variant">{(session.user as any)?.role}</p>
               </div>
             </div>
             <button 
