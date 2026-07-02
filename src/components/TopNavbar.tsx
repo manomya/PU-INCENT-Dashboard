@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import StartupFormModal from './StartupFormModal';
 import Link from 'next/link';
 import { Startup } from '@/services/api';
+import ThemeToggle from './ThemeToggle';
 
 export default function TopNavbar() {
   const pathname = usePathname();
@@ -122,6 +123,7 @@ export default function TopNavbar() {
         </div>
       </div>
       <div className="flex items-center gap-6">
+        <ThemeToggle />
         
         {(session?.user as any)?.permissions?.canAdd && (
           <>

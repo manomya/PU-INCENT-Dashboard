@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import TopNavbar from "@/components/TopNavbar";
 import { Agentation } from "agentation";
 import Providers from "./Providers";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "PU-iNCENT Dashboard | Startup Incubation Center",
@@ -22,14 +23,16 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
       <body className="h-full overflow-hidden font-sans">
-        <Providers>
-          <Sidebar />
-          <TopNavbar />
-          <main className="ml-[280px] pt-24 pb-12 px-margin-desktop h-full overflow-y-auto">
-            {children}
-          </main>
-          <Agentation />
-        </Providers>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <Providers>
+            <Sidebar />
+            <TopNavbar />
+            <main className="ml-[280px] pt-24 pb-12 px-margin-desktop h-full overflow-y-auto bg-background transition-colors duration-200">
+              {children}
+            </main>
+            <Agentation />
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );
