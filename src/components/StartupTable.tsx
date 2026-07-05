@@ -81,12 +81,25 @@ export default function StartupTable({ startups }: { startups: Startup[] }) {
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <div className="text-sm font-medium text-on-surface">{startup.founder_name || 'N/A'}</div>
-                    {startup.college_email && (
-                      <div className="text-xs text-on-surface-variant truncate max-w-[150px]" title={startup.college_email}>
-                        {startup.college_email}
+                    <div className="flex items-center gap-3">
+                      {startup.founders_photo && getDirectImageUrl(startup.founders_photo)?.startsWith('http') ? (
+                        <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-variant/50 shrink-0 relative border border-outline-variant/50">
+                          <Image src={getDirectImageUrl(startup.founders_photo)!} alt={startup.founder_name || 'Founder'} fill sizes="32px" className="object-cover" />
+                        </div>
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 border border-blue-500/20">
+                          {startup.founder_name ? startup.founder_name.substring(0, 1).toUpperCase() : 'N'}
+                        </div>
+                      )}
+                      <div>
+                        <div className="text-sm font-medium text-on-surface">{startup.founder_name || 'N/A'}</div>
+                        {startup.college_email && (
+                          <div className="text-xs text-on-surface-variant truncate max-w-[150px]" title={startup.college_email}>
+                            {startup.college_email}
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </td>
                   <td className="px-6 py-5">
                     <span className="px-3 py-1 bg-surface-variant/50 text-on-surface border border-outline-variant/50 rounded-full text-[10px] font-bold uppercase tracking-wider inline-block group-hover:border-brand-orange/30 transition-colors">

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import DocumentUploader from '@/components/DocumentUploader';
 import StartupActions from '@/components/StartupActions';
 import RemoveDocumentButton from '@/components/RemoveDocumentButton';
+import ZoomableImage from '@/components/ZoomableImage';
 
 export default async function StartupProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -62,8 +63,7 @@ export default async function StartupProfilePage({ params }: { params: Promise<{
             <div className="shrink-0">
               <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl shadow-black/5 border-4 border-white overflow-hidden relative group">
                 {logo && logo.startsWith('http') ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={logo} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <ZoomableImage src={logo} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 ) : (
                   <span className="text-brand-orange font-black text-5xl bg-gradient-to-br from-brand-orange to-brand-orange/60 bg-clip-text text-transparent">{initials}</span>
                 )}
@@ -121,8 +121,7 @@ export default async function StartupProfilePage({ params }: { params: Promise<{
               <div className="flex gap-5">
                 <div className="w-20 h-20 bg-surface-variant rounded-2xl flex items-center justify-center border-2 border-outline-variant/50 overflow-hidden shrink-0 relative">
                   {founderPhoto && founderPhoto.startsWith('http') ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img src={founderPhoto} alt="Founder" className="w-full h-full object-cover" />
+                    <ZoomableImage src={founderPhoto} alt="Founder" className="w-full h-full object-cover" />
                   ) : (
                     <span className="material-symbols-outlined text-4xl text-on-surface-variant opacity-50">person</span>
                   )}

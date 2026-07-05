@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Uploader from './Uploader';
 
 interface StartupFormModalProps {
   isOpen: boolean;
@@ -27,13 +28,10 @@ const FORM_FIELDS = [
   { name: 'Registration Number', type: 'text', label: 'College Registration Number' },
   { name: 'Website', type: 'url', label: 'Website URL' },
   { name: 'Incubation Start Date', type: 'date', label: 'Incubation Start Date' },
-  { name: 'MSME Registration ', type: 'text', label: 'MSME Registration Number' },
-  // Note: Logo, Founder's Photo, and Pitch Deck are managed via the Cloudflare Uploader directly on the profile page,
-  // so we can omit them from this basic text form, or include them as text inputs for manual URL entry.
-  // We'll include them as text for now so they can be edited if needed.
-  { name: 'Logo', type: 'text', label: 'Logo URL' },
-  { name: "Founder's Photo", type: 'text', label: 'Founder Photo URL' },
-  { name: 'Pitch Deck', type: 'text', label: 'Pitch Deck URL' },
+  { name: 'MSME Registration ', type: 'file', label: 'MSME Document' },
+  { name: 'Logo', type: 'file', label: 'Logo' },
+  { name: "Founder's Photo", type: 'file', label: 'Founder Photo' },
+  { name: 'Pitch Deck', type: 'file', label: 'Pitch Deck' },
 ];
 
 export default function StartupFormModal({ isOpen, onClose, mode, initialData = {} }: StartupFormModalProps) {
@@ -141,6 +139,18 @@ export default function StartupFormModal({ isOpen, onClose, mode, initialData = 
                       <option key={opt} value={opt}>{opt}</option>
                     ))}
                   </select>
+                ) : field.type === 'file' ? (
+                  <div className="flex items-center gap-4 w-full bg-surface-variant/30 border border-outline-variant/50 rounded-xl px-4 py-2 min-h-[46px]">
+                    <Uploader 
+                      label={`Upload ${field.label}`}
+                      onUploadSuccess={(url) => setFormData(prev => ({ ...prev, [field.name]: url }))}
+                    />
+                    {formData[field.name] && (
+                      <a href={formData[field.name]} target="_blank" rel="noreferrer" className="text-xs text-brand-orange underline max-w-[200px] truncate" title={formData[field.name]}>
+                        View Uploaded File
+                      </a>
+                    )}
+                  </div>
                 ) : (
                   <input
                     type={field.type}

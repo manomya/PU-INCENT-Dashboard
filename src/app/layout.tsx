@@ -5,6 +5,7 @@ import TopNavbar from "@/components/TopNavbar";
 import BottomNavbar from "@/components/BottomNavbar";
 import Providers from "./Providers";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Agentation } from 'agentation';
 
 import { Hanken_Grotesk } from 'next/font/google';
 
@@ -39,6 +40,7 @@ export default function RootLayout({
               {children}
             </main>
             <BottomNavbar />
+            <Agentation />
           </Providers>
         </ThemeProvider>
       </body>
