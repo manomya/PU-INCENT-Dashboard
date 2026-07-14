@@ -4,6 +4,8 @@ import DocumentUploader from '@/components/DocumentUploader';
 import StartupActions from '@/components/StartupActions';
 import RemoveDocumentButton from '@/components/RemoveDocumentButton';
 import ZoomableImage from '@/components/ZoomableImage';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth';
 
 export default async function StartupProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -18,6 +20,35 @@ export default async function StartupProfilePage({ params }: { params: Promise<{
         <div className="text-center">
           <h2 className="text-2xl font-bold text-on-surface mb-2">Startup Not Found</h2>
           <p className="text-on-surface-variant">We couldn't find a startup with the ID <span className="font-mono bg-surface-variant px-2 py-0.5 rounded text-sm">{id}</span> in the database.</p>
+        </div>
+        <Link href="/startups" className="bg-brand-orange text-white px-6 py-2.5 rounded-xl mt-4 shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)] hover:-translate-y-0.5 transition-all font-bold">
+          Back to Directory
+        </Link>
+      </div>
+    );
+  }
+
+  const session = await getServerSession(authOptions);
+  const permissions = (session?.user as any)?.permissions;
+
+  let hasAccess = false;
+  if (permissions?.accessibleStartups === 'ALL') {
+    hasAccess = true;
+  } else if (Array.isArray(permissions?.accessibleStartups)) {
+    const allowedIds = permissions.accessibleStartups.map((allowedId: string) => allowedId.trim().toLowerCase());
+    const startupIdToCheck = (startup["Startup Registration number"] || id).trim().toLowerCase();
+    hasAccess = allowedIds.includes(startupIdToCheck);
+  }
+
+  if (!hasAccess) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh] space-y-6 bg-surface-container-lowest rounded-3xl border border-outline-variant shadow-sm mx-auto max-w-2xl mt-12">
+        <div className="w-24 h-24 bg-surface-variant/50 rounded-full flex items-center justify-center">
+          <span className="material-symbols-outlined text-5xl text-red-500 opacity-50">lock</span>
+        </div>
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-on-surface mb-2">Access Denied</h2>
+          <p className="text-on-surface-variant">You do not have permission to access the startup with ID <span className="font-mono bg-surface-variant px-2 py-0.5 rounded text-sm">{id}</span>.</p>
         </div>
         <Link href="/startups" className="bg-brand-orange text-white px-6 py-2.5 rounded-xl mt-4 shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)] hover:-translate-y-0.5 transition-all font-bold">
           Back to Directory

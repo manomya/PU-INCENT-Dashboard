@@ -1,5 +1,8 @@
 import { google } from "googleapis";
 import path from "path";
+import dbConnect from '@/lib/mongodb';
+import { AuditLog } from '@/models/AuditLog';
+import { StartupSnapshot } from '@/models/StartupSnapshot';
 
 const SCOPES = [
   "https://www.googleapis.com/auth/spreadsheets",
@@ -70,5 +73,103 @@ export async function getSheetData(sheetName: string) {
   });
 
   CACHE[sheetName] = { data, timestamp: currentTime };
+  
+  // Track direct sheet edits asynchronously
+  if (sheetName.startsWith("Master_Database")) {
+    trackSheetEdits(sheetName, data).catch(err => console.error(err));
+  }
+  
   return data;
+}
+
+async function trackSheetEdits(sheetName: string, newData: any[]) {
+  try {
+    await dbConnect();
+    const snapshot = await StartupSnapshot.findOne({ sheetName });
+    
+    if (!snapshot) {
+      await StartupSnapshot.create({ sheetName, data: JSON.stringify(newData) });
+      return;
+    }
+    
+    const oldData = JSON.parse(snapshot.data);
+    const oldMap = new Map(oldData.map((s: any) => [s["Startup Registration number"], s]));
+    
+    const changesToLog = [];
+    
+    for (const newStartup of newData) {
+      const id = newStartup["Startup Registration number"];
+      if (!id || String(id).trim() === "") continue;
+      
+      const oldStartup = oldMap.get(id);
+      if (!oldStartup) {
+        // Check if there's a recent CREATE log (within 2 mins)
+        const recentLog = await AuditLog.findOne({ startupId: id, action: 'CREATE' }).sort({ timestamp: -1 });
+        if (!recentLog || (Date.now() - new Date(recentLog.timestamp).getTime() > 120000)) {
+           changesToLog.push({
+             action: 'CREATE',
+             startupId: id,
+             startupName: newStartup["Startup Name"] || 'Unknown',
+             user: 'Google Sheet (Direct Edit)',
+             changes: []
+           });
+        }
+      } else {
+        const fieldChanges = [];
+        for (const key of Object.keys(newStartup)) {
+          if (newStartup[key] !== oldStartup[key]) {
+            fieldChanges.push({
+              field: key,
+              oldValue: oldStartup[key],
+              newValue: newStartup[key]
+            });
+          }
+        }
+        
+        if (fieldChanges.length > 0) {
+          const recentLog = await AuditLog.findOne({ startupId: id, action: 'UPDATE' }).sort({ timestamp: -1 });
+          if (!recentLog || (Date.now() - new Date(recentLog.timestamp).getTime() > 120000)) {
+            changesToLog.push({
+               action: 'UPDATE',
+               startupId: id,
+               startupName: newStartup["Startup Name"] || 'Unknown',
+               user: 'Google Sheet (Direct Edit)',
+               changes: fieldChanges
+            });
+          }
+        }
+      }
+    }
+    
+    const newMap = new Map(newData.map((s: any) => [s["Startup Registration number"], s]));
+    for (const oldStartup of oldData) {
+      const id = oldStartup["Startup Registration number"];
+      if (!id || String(id).trim() === "") continue;
+      
+      if (!newMap.has(id)) {
+        const recentLog = await AuditLog.findOne({ startupId: id, action: 'DELETE' }).sort({ timestamp: -1 });
+        if (!recentLog || (Date.now() - new Date(recentLog.timestamp).getTime() > 120000)) {
+           changesToLog.push({
+             action: 'DELETE',
+             startupId: id,
+             startupName: oldStartup["Startup Name"] || 'Unknown',
+             user: 'Google Sheet (Direct Edit)',
+             changes: []
+           });
+        }
+      }
+    }
+    
+    if (changesToLog.length > 0) {
+      await AuditLog.insertMany(changesToLog);
+    }
+    
+    // Update snapshot
+    snapshot.data = JSON.stringify(newData);
+    snapshot.timestamp = new Date();
+    await snapshot.save();
+    
+  } catch (err) {
+    console.error("Error tracking sheet edits:", err);
+  }
 }

@@ -42,6 +42,7 @@ export default function BottomNavbar() {
 
   if ((session?.user as any)?.role === 'admin') {
     navItems.push({ name: 'Admin', href: '/admin/users', icon: 'admin_panel_settings' });
+    navItems.push({ name: 'Logs', href: '/admin/audit-logs', icon: 'history' });
   }
 
   return (

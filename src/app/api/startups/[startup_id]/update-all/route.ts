@@ -3,6 +3,8 @@ import { google } from "googleapis";
 import { clearSheetCache, auth } from "@/lib/google-sheets";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import dbConnect from "@/lib/mongodb";
+import { AuditLog } from "@/models/AuditLog";
 
 const SHEET_ID = "1wWCxLnNGoKZNQMrOd8ZRfdACdVxSK21F9eUM_1uH9oA";
 const TAB_NAME = "Master_Database 2026-27";
@@ -93,6 +95,35 @@ export async function PUT(
     });
 
     clearSheetCache(TAB_NAME);
+
+    try {
+      await dbConnect();
+      const fieldChanges: any[] = [];
+      HEADERS.forEach((header, index) => {
+        const oldValue = existingRow[index] || "";
+        const newValue = rowValues[index] || "";
+        if (oldValue !== newValue) {
+          fieldChanges.push({
+            field: header,
+            oldValue,
+            newValue
+          });
+        }
+      });
+      
+      if (fieldChanges.length > 0) {
+        const startupName = existingRow[HEADERS.findIndex(h => h === "Startup Name")] || "Unknown";
+        await AuditLog.create({
+          action: 'UPDATE',
+          startupId: startup_id,
+          startupName,
+          user: session.user?.email || session.user?.name || "Unknown User",
+          changes: fieldChanges
+        });
+      }
+    } catch (logErr) {
+      console.error("Failed to create audit log", logErr);
+    }
 
     return NextResponse.json({ success: true, message: "Startup updated successfully" });
 

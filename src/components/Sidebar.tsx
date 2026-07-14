@@ -17,6 +17,7 @@ export default function Sidebar() {
 
   if ((session?.user as any)?.role === 'admin') {
     navigation.push({ name: 'Admin', href: '/admin/users', icon: 'admin_panel_settings' });
+    navigation.push({ name: 'Audit Logs', href: '/admin/audit-logs', icon: 'history' });
   }
 
   return (

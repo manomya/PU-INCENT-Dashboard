@@ -3,6 +3,8 @@ import { google } from "googleapis";
 import { clearSheetCache, auth } from "@/lib/google-sheets";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import dbConnect from "@/lib/mongodb";
+import { AuditLog } from "@/models/AuditLog";
 
 const SHEET_ID = "1wWCxLnNGoKZNQMrOd8ZRfdACdVxSK21F9eUM_1uH9oA";
 const TAB_NAME = "Master_Database 2026-27";
@@ -45,6 +47,20 @@ export async function POST(req: NextRequest) {
 
     // Clear cache
     clearSheetCache(TAB_NAME);
+
+    // Create Audit Log
+    try {
+      await dbConnect();
+      await AuditLog.create({
+        action: 'CREATE',
+        startupId: body["Startup Registration number"] || "Unknown",
+        startupName: body["Startup Name"] || "Unknown",
+        user: session.user?.email || session.user?.name || "Unknown User",
+        changes: []
+      });
+    } catch (logErr) {
+      console.error("Failed to create audit log", logErr);
+    }
 
     return NextResponse.json({ success: true, message: "Startup created successfully" });
   } catch (error) {
