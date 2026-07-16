@@ -116,12 +116,14 @@ async function trackSheetEdits(sheetName: string, newData: any[]) {
         }
       } else {
         const fieldChanges = [];
-        for (const key of Object.keys(newStartup)) {
-          if (newStartup[key] !== oldStartup[key]) {
+        const ns = newStartup as Record<string, any>;
+        const os = oldStartup as Record<string, any>;
+        for (const key of Object.keys(ns)) {
+          if (ns[key] !== os[key]) {
             fieldChanges.push({
               field: key,
-              oldValue: oldStartup[key],
-              newValue: newStartup[key]
+              oldValue: os[key],
+              newValue: ns[key]
             });
           }
         }
